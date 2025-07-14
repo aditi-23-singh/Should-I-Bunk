@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Should I Bunk?</title>
+    <!-- Tailwind CSS CDN for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN for icons in the sidebar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom font for a clean look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            /* Light gray background */
+        }
+
+        /* Custom scrollbar for the sidebar for better aesthetics */
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            /* Light blue-gray for track */
+            border-radius: 10px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            /* Darker blue-gray for thumb */
+            border-radius: 10px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+            /* Even darker blue-gray on hover */
+        }
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+    <!-- Top Navbar with the application logo -->
+    <nav class="bg-gradient-to-r from-blue-600 to-indigo-700 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-white text-3xl font-extrabold tracking-wide">
+                SHOULD I BUNK?
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main layout container: flex to hold sidebar and main content -->
+    <div class="flex flex-1">
+        <!-- Sidebar Menu -->
+        <aside class="w-64 bg-gray-800 text-gray-200 p-4 flex flex-col shadow-xl overflow-y-auto sidebar">
+            <div class="mb-8 mt-4">
+                <h2 class="text-xl font-semibold text-gray-100">Menu</h2>
+            </div>
+            <nav class="flex-1">
+                <ul>
+                    <li class="mb-4">
+                        <a href="#" class="flex items-center p-3 rounded-lg bg-gray-700 text-white">
+                            <i class="fas fa-tachometer-alt mr-3 text-green-400"></i>
+                            <span class="font-medium">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="mb-4">
+                        <a href="#"
+                            class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                            <i class="fas fa-users mr-3 text-purple-400"></i>
+                            <span class="font-medium">Number of Users</span>
+                        </a>
+                    </li>
+                    <li class="mb-4">
+                        <a href="#"
+                            class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                            <i class="fas fa-bell mr-3 text-red-400"></i>
+                            <span class="font-medium">Alerts</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="mt-auto text-center text-gray-500 text-sm">
+                &copy; 2024 Should I Bunk?
+            </div>
+        </aside>
+
+        <!-- Main Content Area (Dashboard) -->
+        <main class="flex-1 p-8 bg-gray-100 overflow-y-auto">
+            <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-8 space-y-8">
+                <h1 class="text-4xl font-extrabold text-gray-800 text-center mb-10">Attendance Bunk Predictor</h1>
+
+                <!-- User Input Form -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Optional Name Input -->
+                    <div>
+                        <label for="userName" class="block text-gray-700 text-sm font-bold mb-2">Your Name
+                            (Optional):</label>
+                        <input type="text" id="userName" placeholder="e.g., Jethalal"
+                            class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                    </div>
+                    <!-- Subject selection removed -->
+                    <!-- Input for Current Classes Attended -->
+                    <div>
+                        <label for="currentAttended" class="block text-gray-700 text-sm font-bold mb-2">Current Classes
+                            Attended:</label>
+                        <input type="number" id="currentAttended" placeholder="e.g., 25" min="0"
+                            class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                    </div>
+                    <!-- Input for Total Classes Conducted so far -->
+                    <div>
+                        <label for="totalConducted" class="block text-gray-700 text-sm font-bold mb-2">Total Classes
+                            Conducted (so far):</label>
+                        <input type="number" id="totalConducted" placeholder="e.g., 30" min="0"
+                            class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                    </div>
+                    <!-- Input for Expected Future Classes -->
+                    <div>
+                        <label for="expectedFuture" class="block text-gray-700 text-sm font-bold mb-2">Expected Future
+                            Classes (remaining):</label>
+                        <input type="number" id="expectedFuture" placeholder="e.g., 10" min="0"
+                            class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+                    <button id="checkBunkBtn"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300">
+                        Check Bunk Status
+                    </button>
+                    <button id="resetFormBtn"
+                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-gray-200">
+                        Reset Form
+                    </button>
+                </div>
+
+                <!-- Result Display Area -->
+                <div id="resultDisplay"
+                    class="mt-10 p-6 bg-blue-50 rounded-xl shadow-inner text-center text-lg font-semibold text-gray-800 hidden">
+                    <!-- The prediction message will be displayed here -->
+                </div>
+
+                <!-- Error Message Display Area -->
+                <div id="errorDisplay" class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg hidden">
+                    <!-- Any validation or calculation errors will be displayed here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Get references to all necessary HTML elements
+        const currentAttendedInput = document.getElementById('currentAttended');
+        const totalConductedInput = document.getElementById('totalConducted');
+        const expectedFutureInput = document.getElementById('expectedFuture');
+        const checkBunkBtn = document.getElementById('checkBunkBtn');
+        const resetFormBtn = document.getElementById('resetFormBtn');
+        const resultDisplay = document.getElementById('resultDisplay');
+        const errorDisplay = document.getElementById('errorDisplay');
+        const userNameInput = document.getElementById('userName');
+
+        /**
+         * Calculates and displays whether the user can bunk today.
+         * It considers the 75% minimum attendance criteria.
+         */
+        function checkBunkStatus() {
+            hideResultAndError(); // Clear any previous results or errors
+
+            // Retrieve values from input fields
+            const userName = userNameInput.value.trim();
+
+            const currentAttended = parseInt(currentAttendedInput.value);
+            const totalConducted = parseInt(totalConductedInput.value);
+            const expectedFuture = parseInt(expectedFutureInput.value);
+
+            // Basic input validation
+            if (isNaN(currentAttended) || isNaN(totalConducted) || isNaN(expectedFuture) ||
+                currentAttended < 0 || totalConducted < 0 || expectedFuture < 0) {
+                showError("Please fill in all required fields with valid positive numbers.");
+                return;
+            }
+
+            // Logic validation
+            if (currentAttended > totalConducted) {
+                showError("Current classes attended cannot be more than total classes conducted so far.");
+                return;
+            }
+
+            const minPercentage = 0.75; // The minimum attendance criteria (75%)
+
+            // Calculate the total number of classes that will be conducted by the end of the semester.
+            // This includes classes already conducted and those expected in the future.
+            const finalTotalClassesIfBunk = totalConducted + expectedFuture;
+
+            // Prevent division by zero if no classes are expected
+            if (finalTotalClassesIfBunk === 0) {
+                showError("Total classes (conducted + expected future) cannot be zero. Please enter valid numbers.");
+                return;
+            }
+
+            // Calculate the projected final attendance percentage if the student bunks today's class.
+            // The number of attended classes remains 'currentAttended' if today's class is bunked.
+            const finalPercentageIfBunk = (currentAttended / finalTotalClassesIfBunk);
+
+            let message = "";
+            if (finalPercentageIfBunk >= minPercentage) {
+                // If bunking today still keeps attendance at or above 75%
+                message = `Great news, ${userName || 'student'}! You can bunk today. Your projected final attendance will be <span class="text-green-600 font-bold">${(finalPercentageIfBunk * 100).toFixed(2)}%</span>.`;
+                resultDisplay.classList.remove('bg-blue-50'); // Remove default blue background
+                resultDisplay.classList.add('bg-green-50'); // Add green background for positive result
+            } else {
+                // If bunking today drops attendance below 75%, calculate what happens if they attend.
+                const finalTotalClassesIfAttend = totalConducted + 1 + expectedFuture; // +1 for attending today's class
+                const finalPercentageIfAttend = ((currentAttended + 1) / finalTotalClassesIfAttend);
+
+                if (finalPercentageIfAttend >= minPercentage) {
+                    // If attending today helps meet the 75% criteria
+                    message = `Important, ${userName || 'student'}! You cannot bunk today. If you attend this class, your projected final attendance will be <span class="text-orange-600 font-bold">${(finalPercentageIfAttend * 100).toFixed(2)}%</span>, meeting the 75% criteria.`;
+                    resultDisplay.classList.remove('bg-blue-50');
+                    resultDisplay.classList.add('bg-orange-50'); // Add orange background for a cautionary result
+                } else {
+                    // If even attending today doesn't help meet the 75% criteria
+                    message = `Warning, ${userName || 'student'}! You cannot bunk today. Even if you attend this class, your projected final attendance will be <span class="text-red-600 font-bold">${(finalPercentageIfAttend * 100).toFixed(2)}%</span>, which is still below 75%. You need to attend more classes to meet the criteria.`;
+                    resultDisplay.classList.remove('bg-blue-50');
+                    resultDisplay.classList.add('bg-red-50'); // Add red background for a negative result
+                }
+            }
+            showResult(message); // Display the calculated message
+        }
+
+        /**
+         * Displays a success/info message in the result display area.
+         * @param {string} message - The message to display.
+         */
+        function showResult(message) {
+            resultDisplay.innerHTML = message;
+            resultDisplay.classList.remove('hidden'); // Make result area visible
+            errorDisplay.classList.add('hidden'); // Hide any error messages
+        }
+
+        /**
+         * Displays an error message in the error display area.
+         * @param {string} message - The error message to display.
+         */
+        function showError(message) {
+            errorDisplay.textContent = message;
+            errorDisplay.classList.remove('hidden'); // Make error area visible
+            resultDisplay.classList.add('hidden'); // Hide any result messages
+        }
+
+        /**
+         * Hides both the result and error display areas and resets result background.
+         */
+        function hideResultAndError() {
+            resultDisplay.classList.add('hidden');
+            errorDisplay.classList.add('hidden');
+            // Reset background colors to default blue
+            resultDisplay.classList.remove('bg-green-50', 'bg-orange-50', 'bg-red-50');
+            resultDisplay.classList.add('bg-blue-50');
+        }
+
+        // Initialize and attach event listeners when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Attach event listener to the "Check Bunk Status" button
+            checkBunkBtn.addEventListener('click', checkBunkStatus);
+
+            // Attach event listener to the "Reset Form" button
+            resetFormBtn.addEventListener('click', () => {
+                userNameInput.value = ''; // Clear name input
+                currentAttendedInput.value = ''; // Clear attendance inputs
+                totalConductedInput.value = '';
+                expectedFutureInput.value = '';
+                hideResultAndError(); // Hide any messages
+            });
+        });
+    </script>
+</body>
+
+</html>
