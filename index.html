@@ -98,10 +98,9 @@
                     <div>
                         <label for="userName" class="block text-gray-700 text-sm font-bold mb-2">Your Name
                             (Optional):</label>
-                        <input type="text" id="userName" placeholder="e.g., Jethalal"
+                        <input type="text" id="userName" placeholder="e.g., John Doe"
                             class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
                     </div>
-                    <!-- Subject selection removed -->
                     <!-- Input for Current Classes Attended -->
                     <div>
                         <label for="currentAttended" class="block text-gray-700 text-sm font-bold mb-2">Current Classes
@@ -119,7 +118,7 @@
                     <!-- Input for Expected Future Classes -->
                     <div>
                         <label for="expectedFuture" class="block text-gray-700 text-sm font-bold mb-2">Expected Future
-                            Classes (remaining):</label>
+                            Classes (remaining, excluding today's):</label>
                         <input type="number" id="expectedFuture" placeholder="e.g., 10" min="0"
                             class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
                     </div>
@@ -163,7 +162,7 @@
         const userNameInput = document.getElementById('userName');
 
         /**
-         * Calculates and displays whether the user can bunk today.
+         * Calculates and displays whether the user can bunk today, assuming all remaining future classes are attended.
          * It considers the 75% minimum attendance criteria.
          */
         function checkBunkStatus() {
@@ -174,6 +173,7 @@
 
             const currentAttended = parseInt(currentAttendedInput.value);
             const totalConducted = parseInt(totalConductedInput.value);
+            // 'expectedFuture' is interpreted as the number of classes from after today until the end of the semester.
             const expectedFuture = parseInt(expectedFutureInput.value);
 
             // Basic input validation
@@ -191,42 +191,49 @@
 
             const minPercentage = 0.75; // The minimum attendance criteria (75%)
 
-            // Calculate the total number of classes that will be conducted by the end of the semester.
-            // This includes classes already conducted and those expected in the future.
-            const finalTotalClassesIfBunk = totalConducted + expectedFuture;
+            // --- Scenario A: User attends today's class AND all remaining future classes ---
+            // Total classes by end of semester, including today's class.
+            const totalClassesIfAttendToday = totalConducted + 1 + expectedFuture;
+            // Attended classes if today's is attended and all future are attended.
+            const attendedIfAttendToday = currentAttended + 1 + expectedFuture;
 
-            // Prevent division by zero if no classes are expected
-            if (finalTotalClassesIfBunk === 0) {
-                showError("Total classes (conducted + expected future) cannot be zero. Please enter valid numbers.");
+            // Prevent division by zero
+            if (totalClassesIfAttendToday === 0) {
+                showError("Total classes (conducted + today's + expected future) cannot be zero. Please enter valid numbers.");
                 return;
             }
 
-            // Calculate the projected final attendance percentage if the student bunks today's class.
-            // The number of attended classes remains 'currentAttended' if today's class is bunked.
-            const finalPercentageIfBunk = (currentAttended / finalTotalClassesIfBunk);
+            const percentageIfAttendTodayAndAllFuture = (attendedIfAttendToday / totalClassesIfAttendToday);
+
+            // --- Scenario B: User bunks today's class BUT attends all remaining future classes ---
+            // Total classes by end of semester, still including today's class in the count of total conducted.
+            const totalClassesIfBunkToday = totalConducted + 1 + expectedFuture;
+            // Attended classes if today's is bunked but all future are attended.
+            const attendedIfBunkToday = currentAttended + expectedFuture;
+
+            // Prevent division by zero
+            if (totalClassesIfBunkToday === 0) {
+                showError("Total classes (conducted + today's + expected future) cannot be zero. Please enter valid numbers.");
+                return;
+            }
+
+            const percentageIfBunkTodayAndAllFuture = (attendedIfBunkToday / totalClassesIfBunkToday);
 
             let message = "";
-            if (finalPercentageIfBunk >= minPercentage) {
-                // If bunking today still keeps attendance at or above 75%
-                message = `Great news, ${userName || 'student'}! You can bunk today. Your projected final attendance will be <span class="text-green-600 font-bold">${(finalPercentageIfBunk * 100).toFixed(2)}%</span>.`;
-                resultDisplay.classList.remove('bg-blue-50'); // Remove default blue background
-                resultDisplay.classList.add('bg-green-50'); // Add green background for positive result
-            } else {
-                // If bunking today drops attendance below 75%, calculate what happens if they attend.
-                const finalTotalClassesIfAttend = totalConducted + 1 + expectedFuture; // +1 for attending today's class
-                const finalPercentageIfAttend = ((currentAttended + 1) / finalTotalClassesIfAttend);
+            const namePart = userName ? `${userName}, ` : 'student, ';
 
-                if (finalPercentageIfAttend >= minPercentage) {
-                    // If attending today helps meet the 75% criteria
-                    message = `Important, ${userName || 'student'}! You cannot bunk today. If you attend this class, your projected final attendance will be <span class="text-orange-600 font-bold">${(finalPercentageIfAttend * 100).toFixed(2)}%</span>, meeting the 75% criteria.`;
-                    resultDisplay.classList.remove('bg-blue-50');
-                    resultDisplay.classList.add('bg-orange-50'); // Add orange background for a cautionary result
-                } else {
-                    // If even attending today doesn't help meet the 75% criteria
-                    message = `Warning, ${userName || 'student'}! You cannot bunk today. Even if you attend this class, your projected final attendance will be <span class="text-red-600 font-bold">${(finalPercentageIfAttend * 100).toFixed(2)}%</span>, which is still below 75%. You need to attend more classes to meet the criteria.`;
-                    resultDisplay.classList.remove('bg-blue-50');
-                    resultDisplay.classList.add('bg-red-50'); // Add red background for a negative result
-                }
+            // Always show the attendance if all classes are attended
+            message += `Assuming you attend today's class and all remaining future classes, your final attendance will be <span class="font-bold text-blue-700">${(percentageIfAttendTodayAndAllFuture * 100).toFixed(2)}%</span>.`;
+
+            // Now, advise on bunking today based on the scenario where today is bunked but others are attended
+            if (percentageIfBunkTodayAndAllFuture >= minPercentage) {
+                message += `<br><br>Good news, ${namePart}you can **bunk today's class**! Even if you bunk today, your projected final attendance (assuming you attend all other remaining classes) will be <span class="text-green-600 font-bold">${(percentageIfBunkTodayAndAllFuture * 100).toFixed(2)}%</span>, which meets the 75% criteria.`;
+                resultDisplay.classList.remove('bg-blue-50', 'bg-orange-50', 'bg-red-50');
+                resultDisplay.classList.add('bg-green-50');
+            } else {
+                message += `<br><br>Important, ${namePart}you **cannot bunk today's class**! If you bunk today, your projected final attendance (even if you attend all other remaining classes) will be <span class="text-red-600 font-bold">${(percentageIfBunkTodayAndAllFuture * 100).toFixed(2)}%</span>, which is below the 75% criteria. You must attend today's class to have a chance at meeting the criteria.`;
+                resultDisplay.classList.remove('bg-blue-50', 'bg-green-50', 'bg-orange-50');
+                resultDisplay.classList.add('bg-red-50');
             }
             showResult(message); // Display the calculated message
         }
