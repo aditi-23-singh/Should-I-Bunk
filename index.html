@@ -7,7 +7,7 @@
     <title>Should I Bunk?</title>
     <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome CDN for icons in the sidebar -->
+    <!-- Font Awesome CDN for icons (though sidebar is removed, keeping for general use if needed) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Custom font for a clean look */
@@ -17,27 +17,7 @@
             /* Light gray background */
         }
 
-        /* Custom scrollbar for the sidebar for better aesthetics */
-        .sidebar::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .sidebar::-webkit-scrollbar-track {
-            background: #e2e8f0;
-            /* Light blue-gray for track */
-            border-radius: 10px;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #94a3b8;
-            /* Darker blue-gray for thumb */
-            border-radius: 10px;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
-            /* Even darker blue-gray on hover */
-        }
+        /* Removed custom scrollbar for sidebar as sidebar is removed */
     </style>
 </head>
 
@@ -51,26 +31,11 @@
         </div>
     </nav>
 
-    <!-- Main layout container: flex to hold sidebar and main content -->
+    <!-- Main layout container: flex to hold main content -->
     <div class="flex flex-1">
-        <!-- Sidebar Menu - Now responsive: hidden on small screens, flex on medium screens and up -->
-        <aside class="hidden md:flex md:w-64 bg-gray-800 text-gray-200 p-4 flex-col shadow-xl overflow-y-auto sidebar">
-            <div class="mb-8 mt-4">
-                <h2 class="text-xl font-semibold text-gray-100">Menu</h2>
-            </div>
-            <nav class="flex-1">
-                <ul>
-                    <!-- Dashboard menu item was previously removed -->
-                    <!-- Number of Users menu item removed as per request -->
-                    <!-- Alerts menu item removed as per request -->
-                </ul>
-            </nav>
-            <div class="mt-auto text-center text-gray-500 text-sm">
-                &copy; 2024 Should I Bunk?
-            </div>
-        </aside>
+        <!-- Sidebar Menu has been removed -->
 
-        <!-- Main Content Area (Dashboard) -->
+        <!-- Main Content Area (Dashboard) - now takes full width -->
         <main class="flex-1 p-8 bg-gray-100 overflow-y-auto">
             <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-8 space-y-8">
                 <h1 class="text-4xl font-extrabold text-gray-800 text-center mb-10">Attendance Bunk Predictor</h1>
