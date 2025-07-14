@@ -222,16 +222,16 @@
             let message = "";
             const namePart = userName ? `${userName}, ` : 'student, ';
 
-            // Always show the attendance if all classes are attended
+            // First, state the attendance if all classes are attended
             message += `Assuming you attend today's class and all remaining future classes, your final attendance will be <span class="font-bold text-blue-700">${(percentageIfAttendTodayAndAllFuture * 100).toFixed(2)}%</span>.`;
 
-            // Now, advise on bunking today based on the scenario where today is bunked but others are attended
-            if (percentageIfBunkTodayAndAllFuture >= minPercentage) {
+            // Now, based on whether the 75% criteria is met by attending all, advise on bunking today
+            if (percentageIfAttendTodayAndAllFuture >= minPercentage) {
                 message += `<br><br>Good news, ${namePart}you can **bunk today's class**! Even if you bunk today, your projected final attendance (assuming you attend all other remaining classes) will be <span class="text-green-600 font-bold">${(percentageIfBunkTodayAndAllFuture * 100).toFixed(2)}%</span>, which meets the 75% criteria.`;
                 resultDisplay.classList.remove('bg-blue-50', 'bg-orange-50', 'bg-red-50');
                 resultDisplay.classList.add('bg-green-50');
             } else {
-                message += `<br><br>Important, ${namePart}you **cannot bunk today's class**! If you bunk today, your projected final attendance (even if you attend all other remaining classes) will be <span class="text-red-600 font-bold">${(percentageIfBunkTodayAndAllFuture * 100).toFixed(2)}%</span>, which is below the 75% criteria. You must attend today's class to have a chance at meeting the criteria.`;
+                message += `<br><br>Important, ${namePart}you **cannot bunk today's class**. If you bunk today, your projected final attendance (even if you attend all other remaining classes) will be <span class="text-red-600 font-bold">${(percentageIfBunkTodayAndAllFuture * 100).toFixed(2)}%</span>, which is below the 75% criteria. You must attend today's class to have a chance at meeting the criteria.`;
                 resultDisplay.classList.remove('bg-blue-50', 'bg-green-50', 'bg-orange-50');
                 resultDisplay.classList.add('bg-red-50');
             }
