@@ -53,8 +53,8 @@
 
     <!-- Main layout container: flex to hold sidebar and main content -->
     <div class="flex flex-1">
-        <!-- Sidebar Menu -->
-        <aside class="w-64 bg-gray-800 text-gray-200 p-4 flex flex-col shadow-xl overflow-y-auto sidebar">
+        <!-- Sidebar Menu - Now responsive: hidden on small screens, flex on medium screens and up -->
+        <aside class="hidden md:flex md:w-64 bg-gray-800 text-gray-200 p-4 flex-col shadow-xl overflow-y-auto sidebar">
             <div class="mb-8 mt-4">
                 <h2 class="text-xl font-semibold text-gray-100">Menu</h2>
             </div>
@@ -285,4 +285,5 @@
         });
     </script>
 </body>
+
 </html>
